@@ -1,19 +1,18 @@
-const express=require('express');
-const aiRoutes=require("./routes/ai.routes")
-const cors=require('cors')
+const express = require('express');
+const aiRoutes = require('./routes/ai.routes')
+const cors = require('cors')
 
-const app=express();
+const app = express()
 
-app.use(cors({
-    origin: "*",
-    methods: ["GET", "POST"],
-}));
+app.use(cors())
 
-app.use(express.json());
 
-app.get('/',(req,res)=>{
-    res.send('Radhe Radhe');
+app.use(express.json())
+
+app.get('/', (req, res) => {
+    res.send('Hello World')
 })
-app.use('/ai',aiRoutes)
 
-module.exports=app;
+app.use('/ai', aiRoutes)
+
+module.exports = app

@@ -1,15 +1,12 @@
-import aiService from "../services/ai.services.js";
+const aiService = require("../services/ai.services");
 
-export const getReview = async (req, res) => {
-    const code = req.body.code;
-    if (!code) {
-      return res.status(400).send("code is required");
-    }
+module.exports.getReview = async (req, res) => {
+  const code = req.body.code;
 
-    const response = await aiService(code);
-        res.send(response);
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).send("Error generating response");
-  // }
-}
+  if (!code) {
+    return res.status(400).send("Prompt is required");
+  }
+
+  const response = await aiService(code);
+  res.send(response);
+};

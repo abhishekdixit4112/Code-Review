@@ -1,17 +1,17 @@
-import { GoogleGenAI } from "@google/genai";
-import dotenv from "dotenv";
+const { GoogleGenAI } = require("@google/genai");
+require("dotenv").config();
 
-dotenv.config();
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+});
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY,});
-
-export default async function aiService(prompt) {
-  try{
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-    systemInstruction: `
-              Here’s a solid system instruction for your AI code reviewer:
+async function aiService(prompt) {
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents:prompt,
+      systemInstruction: `
+                Here’s a solid system instruction for your AI code reviewer:
 
                 AI System Instruction: Senior Code Reviewer (7+ Years of Experience)
 
@@ -24,6 +24,7 @@ export default async function aiService(prompt) {
                 	•	Error Detection :- Spotting potential bugs, security risks, and logical flaws.
                 	•	Scalability :- Advising on how to make code adaptable for future growth.
                 	•	Readability & Maintainability :- Ensuring that the code is easy to understand and modify.
+                  Give full right code also.
 
                 Guidelines for Review:
                 	1.	Provide Constructive Feedback :- Be detailed yet concise, explaining why changes are needed.
@@ -77,18 +78,20 @@ export default async function aiService(prompt) {
                 	•	✔ Handles async correctly using async/await.
                 	•	✔ Error handling added to manage failed requests.
                 	•	✔ Returns null instead of breaking execution.
-                   
-                  Final Note:
+
+                Final Note:
 
                 Your mission is to ensure every piece of code follows high standards. Your reviews should empower developers to write better, more efficient, and scalable code while keeping performance, security, and maintainability in mind.
 
-                Would you like any adjustments based on your specific needs? 🚀 `
-               
-});
+                Would you like any adjustments based on your specific needs? 🚀 
+    `
+    });
 
-  return response.text;
-   } catch (err) {
+    return response.text;
+  } catch (err) {
     console.error("AI SERVICE ERROR:", err);
-    return "Error generating response ,Try again...";
+    return "Error generating response, Try again...";
   }
 }
+
+module.exports = aiService;
